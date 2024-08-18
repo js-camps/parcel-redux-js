@@ -1,4 +1,4 @@
-# redux-js
+# redux and redux-thunk
 
 ## a simple JavaScript application: Redux 
 
@@ -68,25 +68,85 @@ npx gitignore node
 node src/redux.js
 ```
 
+## redux-thunk
 
-### Running this project with parcle
+To enhance your Redux code with `redux-thunk`, you'll need to include `redux-thunk` middleware. This allows you to write action creators that return a function instead of an action. These functions can be used to delay the dispatch of an action, or to dispatch only if a certain condition is met.
 
-This project is set up with [Parcel Bundler](https://parceljs.org/), an npm package
-that compiles our frontend assets and comes with an integrated development server.
-
-The dev server runs on port `1234` by default, but will use another if `1234` is
-being used by another application.
-
-- Clone the repo.
-- Navigate into the project folder.
-- Run `npm i` to download the project's dependencies listed in the `package.json`.
-- Run `npm start` to compile the project and spin up a dev server on `http://localhost:1234`.
-
-- Add `"start"` scripts to the `package.json` file  
+- install `redux` and `redux-thunk`:
 
 ```
-"scripts": {
-    "start": "node src/index.html"
-},
+npm install --save redux redux-thunk
 ```
 
+`redux-thunk.js`
+```js
+const { createStore, applyMiddleware } = require('redux');
+const thunk = require('redux-thunk').default;
+
+// Action Types
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+
+// Synchronous Action Creators
+function increment() {
+    return { type: INCREMENT };
+}
+
+function decrement() {
+    return { type: DECREMENT };
+}
+
+// Asynchronous Action Creator using Thunk
+function incrementAsync() {
+    return (dispatch, getState) => {
+        setTimeout(() => {
+            dispatch(increment());
+        }, 1000); // Delay the increment action by 1 second
+    };
+}
+
+function decrementAsync() {
+    return (dispatch, getState) => {
+        setTimeout(() => {
+            dispatch(decrement());
+        }, 1000); // Delay the decrement action by 1 second
+    };
+}
+
+// Reducer
+function counter(state = 0, action) {
+    switch (action.type) {
+        case INCREMENT:
+            return state + 1;
+        case DECREMENT:
+            return state - 1;
+        default:
+            return state;
+    }
+}
+
+// Create a Redux store with thunk middleware
+const store = createStore(
+    counter,
+    applyMiddleware(thunk)
+);
+
+// Display the state changes
+store.subscribe(() => console.log('Current state:', store.getState()));
+
+// Dispatch Actions
+store.dispatch(incrementAsync()); // Will increment the state after 1 second
+store.dispatch(incrementAsync()); // Will increment the state after another 1 second
+store.dispatch(decrementAsync()); // Will decrement the state after 1 second
+```
+
+Note: Running issue
+
+-   need degrade the versions:
+
+```
+  "dependencies": {
+    "redux": "^4.1.2",
+    "redux-thunk": "^2.4.1" 
+  },
+```

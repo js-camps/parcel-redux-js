@@ -1,6 +1,8 @@
 # Redux
 
-The demo for [redux](https://react-redux.js.org/) and [how to use redux](./docs/redux.md)
+The demo for [reducer](https://redux.js.org/tutorials/fundamentals/part-3-state-actions-reducers), [redux](https://react-redux.js.org/) and [redux-thunk](https://redux.js.org/usage/writing-logic-thunks#redux-thunk-middleware)
+
+-   [how to use redux](./docs/redux.md)
 
 ## Running this project
 
