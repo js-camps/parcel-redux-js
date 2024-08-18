@@ -140,7 +140,7 @@ store.dispatch(incrementAsync()); // Will increment the state after another 1 se
 store.dispatch(decrementAsync()); // Will decrement the state after 1 second
 ```
 
-Note: Running issue
+Note: Running issue (app.js works with latest, cdn, etc)
 
 -   need degrade the versions:
 
@@ -150,3 +150,4 @@ Note: Running issue
     "redux-thunk": "^2.4.1" 
   },
 ```
+
