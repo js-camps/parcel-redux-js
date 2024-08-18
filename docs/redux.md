@@ -55,6 +55,11 @@ store.dispatch(increment()); // Current state: 2
 store.dispatch(decrement()); // Current state: 1
 ```
 
+- generate `.gitignore`
+```
+npx gitignore node
+```
+
 ## Running the Example:
 
 ### Running this project with Node

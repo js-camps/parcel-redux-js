@@ -1,8 +1,11 @@
 {
   "scripts": {
-    "start": "node src/redux.js"
+    "start": "parcel index.html"
   },
   "dependencies": {
     "redux": "^5.0.1"
+  },
+  "devDependencies": {
+    "parcel": "^2.12.0"
   }
 }
