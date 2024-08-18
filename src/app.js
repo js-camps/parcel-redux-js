@@ -1,26 +1,51 @@
 // Define the initial state
-let value = 0;
+const initialState = {
+    count: 0
+};
 
-// Function to update the displayed value
-function updateDisplay() {
-    document.getElementById('value').textContent = value;
+// Define action types
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+
+// Action creators
+function incrementCount() {
+    return { type: INCREMENT };
 }
 
-// Function to increment the value
-function increment() {
-    value++;
-    updateDisplay();
+function decrementCount() {
+    return { type: DECREMENT };
 }
 
-// Function to decrement the value
-function decrement() {
-    value--;
-    updateDisplay();
+// Reducer
+function counterReducer(state = initialState, action) {
+    switch (action.type) {
+        case INCREMENT:
+            return { ...state, count: state.count + 1 };
+        case DECREMENT:
+            return { ...state, count: state.count - 1 };
+        default:
+            return state;
+    }
 }
+
+// Create Redux store
+const store = Redux.createStore(counterReducer);
+
+// Function to render the UI
+function render() {
+    const state = store.getState();
+    document.getElementById('value').textContent = state.count;
+}
+
+// Subscribe render to the store
+store.subscribe(render);
+render();
 
 // Attach event listeners to buttons
-document.getElementById('increment').addEventListener('click', increment);
-document.getElementById('decrement').addEventListener('click', decrement);
+document.getElementById('increment').addEventListener('click', () => {
+    store.dispatch(incrementCount());
+});
 
-// Initialize the display
-updateDisplay();
+document.getElementById('decrement').addEventListener('click', () => {
+    store.dispatch(decrementCount());
+});
