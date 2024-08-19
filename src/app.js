@@ -1,70 +1,50 @@
-// Redux and Redux Thunk
-const { createStore, applyMiddleware } = Redux;
-const { default: thunk } = ReduxThunk;
-
-// Define the initial state
-const initialState = {
-    count: 0
-};
-
-// Action types
+// Define action types
 const INCREMENT = 'INCREMENT';
 const DECREMENT = 'DECREMENT';
 
-// Action creators
-const incrementCount = () => ({ type: INCREMENT });
-const decrementCount = () => ({ type: DECREMENT });
-
-// Thunk action creators for asynchronous actions
-function incrementAsync() {
-    return function(dispatch) {
-        setTimeout(() => {
-            dispatch(incrementCount());
-        }, 1000); // Delay action by 1 second
-    };
-}
-
-function decrementAsync() {
-    return function(dispatch) {
-        setTimeout(() => {
-            dispatch(decrementCount());
-        }, 1000); // Delay action by 1 second
-    };
-}
-
-// Reducer
-function counterReducer(state = initialState, action) {
+// Reducer function to handle state changes
+function reducer(state, action) {
     switch (action.type) {
         case INCREMENT:
-            return { ...state, count: state.count + 1 };
+            return state + 1;
         case DECREMENT:
-            return { ...state, count: state.count - 1 };
+            return state - 1;
         default:
             return state;
     }
 }
 
-// Create Redux store with thunk middleware
-const store = createStore(
-    counterReducer,
-    applyMiddleware(thunk)
-);
+// Store-like object to manage state and dispatching
+const createStore = (reducer, initialState) => {
+    let state = initialState;
+    const getState = () => state;
+    const dispatch = (action) => {
+        state = reducer(state, action);
+        updateDisplay();
+    };
+    return { getState, dispatch };
+};
 
-// Function to render the UI
-function render() {
-    const state = store.getState();
-    document.getElementById('value').textContent = state.count;
+// Create a store with the initial value
+const store = createStore(reducer, 0);
+
+// Function to update the displayed value
+function updateDisplay() {
+    document.getElementById('value').textContent = store.getState();
 }
 
-// Subscribe render to the store
-store.subscribe(render);
-render();
+// Functions to dispatch actions
+function increment() {
+    store.dispatch({ type: INCREMENT });
+}
 
-// Attach event listeners to buttons for asynchronous actions
-document.getElementById('increment').addEventListener('click', () => {
-    store.dispatch(incrementAsync());
-});
+function decrement() {
+    store.dispatch({ type: DECREMENT });
+}
 
-document.getElementById('decrement').addEventListener('click', () => {
-    store.dispatch(decrementAsync());
-});
+// Attach event listeners to buttons
+document.getElementById('increment').addEventListener('click', increment);
+document.getElementById('decrement').addEventListener('click', decrement);
+
+// Initialize the display
+updateDisplay();
