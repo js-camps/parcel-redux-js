@@ -1,5 +1,6 @@
-const { createStore, applyMiddleware } = require('redux');
-const thunk = require('redux-thunk').default;
+import { createStore, applyMiddleware } from 'redux';
+import * as ReduxThunk from 'redux-thunk';
+const thunk = ReduxThunk.thunk; // Correctly reference the `thunk` middleware function
 
 // Action Types
 const INCREMENT = 'INCREMENT';
@@ -46,7 +47,7 @@ function counter(state = 0, action) {
 // Create a Redux store with thunk middleware
 const store = createStore(
     counter,
-    applyMiddleware(thunk)
+    applyMiddleware(thunk) // Applying the thunk middleware correctly
 );
 
 // Subscribe to state changes
